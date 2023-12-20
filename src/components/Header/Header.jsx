@@ -1,12 +1,15 @@
 import img from '../../assets/no-projects.png';
 // import Project from "../Project/Project"
 // import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Header({ clickButton }){
+
+export default function Header(){
 
     const projectText = 'No project selected'
 
-   console.log(clickButton);
+   const navigate = useNavigate();
+
 
    
 
@@ -20,7 +23,7 @@ export default function Header({ clickButton }){
             
         <p className="my-8 text-center text-1xl">Select a project or start a new project by clicking button below.</p>
                     
-        <button className='bg-gray-500/75 hover:bg-gray-700/75 text-white font-bold py-2 px-4 rounded mx-auto block' onClick={clickButton}>Create New Project</button>
+        <button className='bg-gray-500/75 hover:bg-gray-700/75 text-white font-bold py-2 px-4 rounded mx-auto block' onClick={() => navigate('/project')}>Create New Project</button>
            
         </header>
         </>
