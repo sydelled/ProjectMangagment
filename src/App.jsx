@@ -6,24 +6,28 @@ import { useState } from 'react';
 function App() {
    
   const [ clickButton, setClickButton ] = useState(false);
+  
 
   const handleChange = () => {
      
           setClickButton(true);
   };
   
+  //cancels new project click
+  const handleCancel = () => {
+    setClickButton(false);
+  }
+ 
+  
   return (
-    <>
-  
-    <SideBar handleChange={handleChange} />
-    
-    {clickButton ? ( <Project />
-    ) : (
-    <Header clickButton={clickButton} handleChange={handleChange} />)};
-   
-  
-    </>
-    
+    <div className="grid grid-cols-5 gap-8">
+      <SideBar handleChange={handleChange} />
+      {clickButton ? (
+        <Project clickButton={handleCancel} />
+      ) : (
+        <Header clickButton={handleChange} />
+      )}
+    </div>
   );
 };
 
