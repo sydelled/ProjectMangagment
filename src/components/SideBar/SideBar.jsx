@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-export default function SideBar(){
+export default function SideBar( { newProject }){
 
     const navigate = useNavigate();
 

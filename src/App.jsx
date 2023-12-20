@@ -2,22 +2,22 @@ import Header from "./components/Header/Header"
 import SideBar from "./components/SideBar/SideBar";
 import Project from "./components/Project/Project";
 import NoPage from "./components/NoPage/NoPage";
+import Task from "./components/Task/Task";
 import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 function App() {
    
-  // const [ clickButton, setClickButton ] = useState(false);
-  
+   
+  const [updatedObject, setUpdatedObject] = useState(null);
 
-  // const handleChange = () => {
-     
-  //         setClickButton(true);
-  // };
-  
-  
- 
-  
+  // Callback function to receive the updated object from Project component
+  const handleObjectUpdate = (updatedObj) => {
+    setUpdatedObject(updatedObj);
+  };
+
+  console.log('app', updatedObject);
+    
   return (
 
     <>
@@ -25,8 +25,10 @@ function App() {
     <SideBar />
     
     <Routes>
-          <Route path="/header" element={<Header />} />
-          <Route path="/project" element={<Project />} />
+          {/* main page */}
+          <Route path="/" element={<Header />} />
+          <Route path="/project" element={<Project objectUpdate={handleObjectUpdate}/>} />
+          <Route path="/task" element={<Task newProject={updatedObject}/>} />
           <Route path="*" element={<NoPage />} />
        </Routes>
 
