@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom';
 
 
 
@@ -7,7 +7,7 @@ export default function NoPage (){
         
         <div className='col-span-4'>
         
-        <p className="pt-10">Page doesn't exist. Go back to home.</p>
+        <p className="pt-10">Page doesn't exist. Go back to <Link className= 'hover:text-gray-400' to='/'>home.</Link></p>
         
         </div>
     );

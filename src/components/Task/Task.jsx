@@ -3,26 +3,30 @@
 
 
 
-export default function Task ( { newProject }){
+export default function Task ( { value }){
 
 
-    console.log('task', newProject)
     return (
-        <>
+
+
         <div className='col-span-4'>
         <div className="grid grid-rows-4 gap-10">
 
-        <p>{newProject.Title}</p>
-        <p>{newProject.Date}</p>
-        <p>{newProject.Description}</p>
+       
+        <div className='p-3'>
+            <p>Title: {value.Title}</p>
+            <p>Date: {value.Date}</p>
+            <p>Description: {value.Description}</p> 
+                     
+        </div>
 
-
+               
 
         </div>
         </div>
         
         
         
-        </>
+        
     );
 };

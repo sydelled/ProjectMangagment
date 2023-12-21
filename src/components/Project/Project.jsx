@@ -27,11 +27,14 @@ export default function Project ({ objectUpdate }){
                 };
             });
 
-            // Call the onObjectUpdate callback with the updated object - from app component
-            objectUpdate(updateProject);
+            
     };
     
     const handleSave = () => {
+
+        // Call the onObjectUpdate callback with the updated object - from app component
+        objectUpdate(updateProject);
+
         setUpdateProject({
             Title: '',
             Description: '', 

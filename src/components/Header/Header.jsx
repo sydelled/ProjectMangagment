@@ -1,6 +1,4 @@
 import img from '../../assets/no-projects.png';
-// import Project from "../Project/Project"
-// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
