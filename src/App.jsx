@@ -15,10 +15,11 @@ function App() {
 
   // Callback function to receive the updated object from Project component
   const handleObjectUpdate = (updatedObj) => {
-    // Appending the new object to the existing array
     //creating an array of objects over multiple updates
     //updates previous empty array with new updated array by spread operator
+    //display onto sidebar
     setUpdatedObject(prevState => [...prevState, updatedObj]); 
+    //update object to display in tasks component
     setDisplayTask(updatedObj);
     
   };
