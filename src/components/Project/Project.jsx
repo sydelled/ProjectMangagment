@@ -53,7 +53,7 @@ export default function Project ({ objectUpdate }){
    
     return(
              <div className='col-span-4'>
-        <div className="grid grid-rows-4 gap-10">
+        <div className="grid grid-rows-4 gap-10 p-10">
    
            
            
@@ -71,7 +71,7 @@ export default function Project ({ objectUpdate }){
            
          </div>
          <div>
-           <label className='uppercase text-brown-600 font-bold'>Description: <p><input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4  w-3/4 h-4/5" type="text" name="Description" value={updateProject.Description} onChange={handleChange}></input></p></label>
+           <label className='uppercase text-brown-600 font-bold'>Description: <p><input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4 w-3/4 min-h-4/5" type="text" name="Description" value={updateProject.Description} onChange={handleChange}></input></p></label>
            
          </div>
          <div>
