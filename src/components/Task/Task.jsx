@@ -5,38 +5,38 @@ import { useState, useEffect } from 'react';
 
 export default function Task ( { value }){
 
-    const [tasks, setTasks] = useState([]);
-    const [taskInput, setTaskInput] = useState('');
-    const [ disable, setDisable ] = useState(false);
-    const [ active, setActive ] = useState(false);
+//     const [tasks, setTasks] = useState([]);
+//     const [taskInput, setTaskInput] = useState('');
+//     const [ disable, setDisable ] = useState(false);
+//     const [ active, setActive ] = useState(false);
 
-    const handleChange = (event) => {
-        setTaskInput(event.target.value);
-    };
+//     const handleChange = (event) => {
+//         setTaskInput(event.target.value);
+//     };
 
-    const addTask = () => {
-        setTasks((prevTasks) => [...prevTasks, taskInput]);
-        setTaskInput(''); // Reset input field after adding task
-        setActive(true);
-    };
+//     const addTask = () => {
+//         setTasks((prevTasks) => [...prevTasks, taskInput]);
+//         setTaskInput(''); // Reset input field after adding task
+//         setActive(true);
+//     };
 
-    const handleClear = (index) => {
-        //filters out previous index
-        //checks if previous index is not equal to current index and filters it out
-        setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+//     const handleClear = (index) => {
+//         //filters out previous index
+//         //checks if previous index is not equal to current index and filters it out
+//         setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
 
-    };
+//     };
 
-    useEffect(() => {
-       // Check if taskInput is empty
-    if (taskInput === '') {
-        setDisable(true);
-    } else {
-        setDisable(false);
-    }
-}, [taskInput]);
+//     useEffect(() => {
+//        // Check if taskInput is empty
+//     if (taskInput === '') {
+//         setDisable(true);
+//     } else {
+//         setDisable(false);
+//     }
+// }, [taskInput]);
         
-    console.log('tasks', tasks)
+    
 
     return (
 
@@ -52,7 +52,7 @@ export default function Task ( { value }){
                      
         </div>
 
-        <div><hr className="solid"></hr></div>
+        {/* <div><hr className="solid"></hr></div>
 
 
         <div className='flex flex-col pt-10 p-5 pb-20'>
@@ -84,7 +84,7 @@ export default function Task ( { value }){
             ) : (
                 <p className='font-mono'>Please enter tasks above.</p>
             )}
-            </div>
+            </div> */}
 
         </div>
         </div>
