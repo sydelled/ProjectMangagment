@@ -10,18 +10,15 @@ function App() {
    
   //initial empty array
   const [updatedObject, setUpdatedObject] = useState([]);
-  const [displayTask, setDisplayTask] = useState({});
+  // const [displayTask, setDisplayTask] = useState({});
  
 
   // Callback function to receive the updated object from Project component
   const handleObjectUpdate = (updatedObj) => {
     //creating an array of objects over multiple updates
     //updates previous empty array with new updated array by spread operator
-    //display onto sidebar
     setUpdatedObject(prevState => [...prevState, updatedObj]); 
-    //update object to display in tasks component
-    setDisplayTask(updatedObj);
-    
+   
   };
 
   console.log('app', updatedObject);
@@ -37,7 +34,21 @@ function App() {
       {/* main page */}
       <Route path="/" element={<Header />} />
       <Route path="/project" element={<Project objectUpdate={handleObjectUpdate} />} />
-      <Route path="/task/:title" element={<Task value={displayTask} />} />
+
+      {updatedObject.map((object, index) => (
+        <Route
+          key={index} // Ensure a unique key for each Route
+          path={`/task/${object.Title}`} // title is unique and used in the URL
+          element={
+            <Task
+              title={object.Title}
+              date={object.Date}
+              description={object.Description}
+            />
+          }
+        />
+      ))}
+
       <Route path="*" element={<NoPage />} />
     </Routes>
 
