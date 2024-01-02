@@ -1,23 +1,48 @@
 
 
 import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 
-export default function Task ( { title, date, description }){
+export default function Task ( { title, date, description,projectObject, deleteProject }){
 
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('');
+
     const [ disable, setDisable ] = useState(false);
-    const [ active, setActive ] = useState(false);
+    const [ active, setActive ] = useState({ [projectObject.Title] : false} );
+    // const [ isDeleted, setIsDeleted ] = useState(false);
+    const navigate = useNavigate();
+
+    const formattedDate = new Date(date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
 
     const handleChange = (event) => {
         setTaskInput(event.target.value);
     };
 
+    const handleDeleteProject = async () => {
+        try {
+            const deletionResult = await deleteProject(projectObject.Title);
+            // Do something with the result if needed
+            console.log(deletionResult);
+            // Navigate after successful deletion
+            navigate('/');
+          } catch (error) {
+            // Handle errors if the deletion fails
+            console.error('Deletion failed:', error);
+          }
+        };
+
+
     const addTask = () => {
-        setTasks((prevTasks) => [...prevTasks, taskInput]);
+        const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectId
+        setTasks((prevTasks) => [...prevTasks, newTask]);
         setTaskInput(''); // Reset input field after adding task
-        setActive(true);
+        setActive({...active, [projectObject.Title] : true} );
     };
 
     const handleClear = (index) => {
@@ -34,9 +59,12 @@ export default function Task ( { title, date, description }){
     } else {
         setDisable(false);
     }
-}, [taskInput]);
+    }, [taskInput]);
         
-    
+    // Filter tasks for the current projectObject
+    const projectTasks = tasks.filter((task) => task.projectTitle === projectObject.Title);
+
+    const isActive = active[projectObject.Title] || false;
 
     return (
 
@@ -46,8 +74,16 @@ export default function Task ( { title, date, description }){
 
        
         <div className='flex flex-col pt-10 pb-20'>
+        
+        <div className='flex flex-row justify-between pb-10'>
             <h1 className='text-brown-600 text-3xl uppercase font-serif font-bold'>{title}</h1>
-            <h2 className='pt-2 text-gray-500 font-mono text-lg'>{date}</h2>
+            
+            <button className="hover:text-gray-400 pr-20 font" 
+            onClick={handleDeleteProject}>Delete</button>
+            
+
+            </div>
+            <h2 className='pt-2 text-gray-500 font-mono text-lg'>{formattedDate}</h2>
             <p className='pt-10 font-mono text-lg'>{description}</p> 
                      
         </div>
@@ -67,14 +103,14 @@ export default function Task ( { title, date, description }){
             </div>
 
             
-            {active ? (
+            {isActive ? (
             
             <section className='bg-tan-100/40 px-4 py-2 rounded-md w-3/4'>
-            {tasks.map((taskValue, index) => (
+            {projectTasks.map((taskValue, index) => (
                 
                     <div className="flex flex-row justify-between p-5" key={index}>
                     
-                        {taskValue}
+                        {taskValue.task}
                         <button className='hover:text-gray-400' onClick={() => handleClear(index)}>Clear</button>
                     
                     

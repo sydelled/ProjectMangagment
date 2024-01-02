@@ -5,10 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 export default function SideBar( { newProject }){
 
     const navigate = useNavigate();
-    // const projectArray = [];
-    // projectArray.push(newProject);
-
-    console.log('navigate', newProject)
+    
     return(
         
         <aside className="bg-black min-h-screen">
@@ -22,7 +19,7 @@ export default function SideBar( { newProject }){
                 {newProject.map((obj, index) => (
                     <div className='pt-3' key={index}>
                     <Link to={`/task/${obj.Title}`}>
-                        <p className="text-white text-center font-bold uppercase">{obj.Title}</p>
+                        <p className="text-white text-center font-bold uppercase hover:bg-gray-700/75 ">{obj.Title}</p>
                     </Link>
                     </div>
 

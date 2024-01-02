@@ -10,15 +10,24 @@ function App() {
    
   //initial empty array
   const [updatedObject, setUpdatedObject] = useState([]);
-  // const [displayTask, setDisplayTask] = useState({});
- 
-
+  
   // Callback function to receive the updated object from Project component
   const handleObjectUpdate = (updatedObj) => {
     //creating an array of objects over multiple updates
     //updates previous empty array with new updated array by spread operator
     setUpdatedObject(prevState => [...prevState, updatedObj]); 
    
+  };
+
+  const deleteProject = (project) => {
+    return new Promise((resolve) => {
+      const updateProjectObj = updatedObject.filter(obj => obj.Title !== project);
+      setUpdatedObject(updateProjectObj);
+      setTimeout(() => {
+        // Assuming the deletion was successful
+        resolve(`Project with ID ${project} deleted`);
+      }, 1000); // Simulated delay of 1 second
+    });
   };
 
   console.log('app', updatedObject);
@@ -44,6 +53,8 @@ function App() {
               title={object.Title}
               date={object.Date}
               description={object.Description}
+              projectObject={object}
+              deleteProject={deleteProject}
             />
           }
         />
