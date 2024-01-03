@@ -8,8 +8,8 @@ export function AlertDeleteProject( {  open, onClose, deleteProject, projectObje
     const handleDeleteProject = async () => {
         
         try {
-            const deletionResult = await deleteProject(projectObject.Title);
-            console.log('result', typeof(projectObject))
+            const deletionResult = await deleteProject(projectObject, index);
+            console.log('result', projectObject.Title)
 
             console.log(deletionResult);
             onClose();
@@ -21,7 +21,7 @@ export function AlertDeleteProject( {  open, onClose, deleteProject, projectObje
           }
         };
 
-        console.log('open', open)
+    
     return(
         <>
         {open && (

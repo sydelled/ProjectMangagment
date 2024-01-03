@@ -38,18 +38,27 @@ function App() {
    
   };
 
-  const deleteProject = (project) => {
+  const handleDeleteProject = (project) => {
     return new Promise((resolve) => {
-      console.log('app_project', project)
-      console.log('update_obj', updatedObject)
-      const updateProjectObj = updatedObject.filter(obj => obj.Title !== project);
-      setUpdatedObject(updateProjectObj);
-      setTimeout(() => {
-        // Assuming the deletion was successful
-        resolve(`Project with Title ${project} deleted`);
-      }, 1000); // Simulated delay of 1 second
-    });
-  };
+      
+      
+        // // Create a copy of updatedObject
+        // const updatedObjectCopy = [...updatedObject];
+    
+        // // Filter out the object to be deleted
+        // const updatedObjectFiltered = updatedObjectCopy.filter(obj => obj.Title !== project[index]);
+    
+        // Simulate deletion with a delay
+        setTimeout(() => {
+          // Update the state with the modified copy
+          
+          setUpdatedObject((prevProjects) => prevProjects.filter((_, i) => i !== ind));
+    
+          // Resolve after successful deletion
+          resolve(`Project with Title ${project.Title} deleted`);
+        }, 1000); // Simulated delay of 1 second
+      });
+    };
   
   
   return (
@@ -89,7 +98,7 @@ function App() {
         key={index}
         open={openModals}
         onClose={handleCloseModal}
-        deleteProject={deleteProject}
+        deleteProject={() => handleDeleteProject(object, index)}
         projectObject={object}
       />
     ))}
