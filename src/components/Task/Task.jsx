@@ -1,19 +1,18 @@
 
 
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 
 
-export default function Task ( { title, date, description,projectObject, deleteProject }){
+
+
+export default function Task ( { title, date, description, projectObject, handleOpenModal }){
 
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('');
 
     const [ disable, setDisable ] = useState(false);
     const [ active, setActive ] = useState({ [projectObject.Title] : false} );
-    // const [ isDeleted, setIsDeleted ] = useState(false);
-    const navigate = useNavigate();
-
+   
     const formattedDate = new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -23,20 +22,6 @@ export default function Task ( { title, date, description,projectObject, deleteP
     const handleChange = (event) => {
         setTaskInput(event.target.value);
     };
-
-    const handleDeleteProject = async () => {
-        try {
-            const deletionResult = await deleteProject(projectObject.Title);
-            // Do something with the result if needed
-            console.log(deletionResult);
-            // Navigate after successful deletion
-            navigate('/');
-          } catch (error) {
-            // Handle errors if the deletion fails
-            console.error('Deletion failed:', error);
-          }
-        };
-
 
     const addTask = () => {
         const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectId
@@ -79,7 +64,8 @@ export default function Task ( { title, date, description,projectObject, deleteP
             <h1 className='text-brown-600 text-3xl uppercase font-serif font-bold'>{title}</h1>
             
             <button className="hover:text-gray-400 pr-20 font" 
-            onClick={handleDeleteProject}>Delete</button>
+            onClick={handleOpenModal}>Delete</button>
+            
             
 
             </div>
@@ -124,7 +110,6 @@ export default function Task ( { title, date, description,projectObject, deleteP
 
         </div>
         </div>
-        
         
     );
 };
