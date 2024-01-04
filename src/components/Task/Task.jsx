@@ -24,7 +24,7 @@ export default function Task ( { title, date, description, projectObject, handle
     };
 
     const addTask = () => {
-        const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectId
+        const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectTitle
         setTasks((prevTasks) => [...prevTasks, newTask]);
         setTaskInput(''); // Reset input field after adding task
         setActive({...active, [projectObject.Title] : true} );

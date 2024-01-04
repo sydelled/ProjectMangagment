@@ -4,7 +4,8 @@ import Project from "./components/Project/Project";
 import NoPage from "./components/NoPage/NoPage";
 import Task from "./components/Task/Task";
 import { AlertDeleteProject } from "./components/AlertDeleteProject/AlertDeleteProject";
-import React from 'react';
+
+
 
 
 
@@ -15,11 +16,7 @@ function App() {
    
   //initial empty array
   const [updatedObject, setUpdatedObject] = useState([]);
-  // const [openModal, setOpenModal] = useState(false);
-
-  // const handleOpenModal = () => setOpenModal(true);
-  // const handleCloseModal = () => setOpenModal(false);
-
+ 
   const [openModals, setOpenModals] = useState({});
 
   const handleOpenModal = () => {
@@ -93,6 +90,7 @@ function App() {
     </Routes>
   
     {/* Render AlertDeleteProject */}
+    
     {updatedObject.map((object, index) => (
       <AlertDeleteProject
         key={index}
@@ -100,8 +98,10 @@ function App() {
         onClose={handleCloseModal}
         deleteProject={() => handleDeleteProject(object, index)}
         projectObject={object}
+        
       />
     ))}
+    
   </div>
   );
 };

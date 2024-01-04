@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-export function AlertDeleteProject( {  open, onClose, deleteProject, projectObject} ) {
+export function AlertDeleteProject( {  open, onClose, projectObject} ) {
 
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
     
     const handleDeleteProject = async () => {
         
@@ -28,7 +29,7 @@ export function AlertDeleteProject( {  open, onClose, deleteProject, projectObje
         <dialog open={open}>
         <p>Are you sure you want to delete this project?</p>
         
-        <button onClick={handleDeleteProject}>Yes</button>
+        <button onClick={handleConfirmDeletion}>Yes</button>
         <button onClick={onClose}>No</button>
         </dialog>
         )}
