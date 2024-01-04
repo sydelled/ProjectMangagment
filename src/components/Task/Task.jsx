@@ -1,18 +1,26 @@
 
-
 import { useState, useEffect } from 'react';
+import AlertDeleteProject from '../AlertDeleteProject/AlertDeleteProject';
 
-
-
-
-export default function Task ( { title, date, description, projectObject, handleOpenModal }){
+export default function Task ( { title, date, description, projectObject, projectArray }){
 
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('');
 
     const [ disable, setDisable ] = useState(false);
     const [ active, setActive ] = useState({ [projectObject.Title] : false} );
+    const [deleteProject, setDeleteProject] = useState([]);
    
+    const [openModals, setOpenModals] = useState(false);
+
+    const handleOpenModal = () => {
+      setOpenModals(true);
+    };
+  
+    const handleCloseModal = () => {
+      setOpenModals(false);
+    };
+
     const formattedDate = new Date(date).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
@@ -24,7 +32,7 @@ export default function Task ( { title, date, description, projectObject, handle
     };
 
     const addTask = () => {
-        const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectTitle
+        const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectId
         setTasks((prevTasks) => [...prevTasks, newTask]);
         setTaskInput(''); // Reset input field after adding task
         setActive({...active, [projectObject.Title] : true} );
@@ -51,6 +59,19 @@ export default function Task ( { title, date, description, projectObject, handle
 
     const isActive = active[projectObject.Title] || false;
 
+    const confirmDeleteProject = (project) => {
+        console.log("current", project);
+        setTimeout(() => {
+         
+              const projectDelete = projectArray.filter(object => object.Title !== project);
+              console.log('project array', projectDelete)
+              setDeleteProject([...deleteProject]);
+          
+          handleCloseModal();
+        }, 1000); // Simulated delay of 1 second
+      };
+
+
     return (
 
 
@@ -63,8 +84,17 @@ export default function Task ( { title, date, description, projectObject, handle
         <div className='flex flex-row justify-between pb-10'>
             <h1 className='text-brown-600 text-3xl uppercase font-serif font-bold'>{title}</h1>
             
-            <button className="hover:text-gray-400 pr-20 font" 
-            onClick={handleOpenModal}>Delete</button>
+            <button className="hover:text-gray-400 pr-20 font" onClick={handleOpenModal}>
+                    Delete
+                </button>
+                {openModals && (
+                    <AlertDeleteProject
+                    deleteProject={confirmDeleteProject}
+                    projectObject={projectObject}
+                    
+                    />
+                )}
+            
             
             
 
@@ -80,7 +110,7 @@ export default function Task ( { title, date, description, projectObject, handle
         <div className='flex flex-col pt-10 p-5 pb-20'>
         
             <h3 className='text-brown-600 text-2xl uppercase font-serif font-bold pb-10'>Tasks</h3>
-       
+
             
             <div className='flex flex-row justify-between pb-10'>
             

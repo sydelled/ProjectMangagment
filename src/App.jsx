@@ -3,9 +3,7 @@ import SideBar from "./components/SideBar/SideBar";
 import Project from "./components/Project/Project";
 import NoPage from "./components/NoPage/NoPage";
 import Task from "./components/Task/Task";
-import { AlertDeleteProject } from "./components/AlertDeleteProject/AlertDeleteProject";
-
-
+import React from 'react';
 
 
 
@@ -16,16 +14,6 @@ function App() {
    
   //initial empty array
   const [updatedObject, setUpdatedObject] = useState([]);
- 
-  const [openModals, setOpenModals] = useState({});
-
-  const handleOpenModal = () => {
-    setOpenModals(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModals(false);
-  };
 
   // Callback function to receive the updated object from Project component
   const handleObjectUpdate = (updatedObj) => {
@@ -35,29 +23,7 @@ function App() {
    
   };
 
-  const handleDeleteProject = (project) => {
-    return new Promise((resolve) => {
-      
-      
-        // // Create a copy of updatedObject
-        // const updatedObjectCopy = [...updatedObject];
-    
-        // // Filter out the object to be deleted
-        // const updatedObjectFiltered = updatedObjectCopy.filter(obj => obj.Title !== project[index]);
-    
-        // Simulate deletion with a delay
-        setTimeout(() => {
-          // Update the state with the modified copy
-          
-          setUpdatedObject((prevProjects) => prevProjects.filter((_, i) => i !== ind));
-    
-          // Resolve after successful deletion
-          resolve(`Project with Title ${project.Title} deleted`);
-        }, 1000); // Simulated delay of 1 second
-      });
-    };
-  
-  
+ 
   return (
 
 
@@ -79,7 +45,8 @@ function App() {
               date={object.Date}
               description={object.Description}
               projectObject={object}
-              handleOpenModal={handleOpenModal}
+              projectArray={updatedObject}
+  
             />
           }
         />
@@ -89,19 +56,6 @@ function App() {
       <Route path="*" element={<NoPage />} />
     </Routes>
   
-    {/* Render AlertDeleteProject */}
-    
-    {updatedObject.map((object, index) => (
-      <AlertDeleteProject
-        key={index}
-        open={openModals}
-        onClose={handleCloseModal}
-        deleteProject={() => handleDeleteProject(object, index)}
-        projectObject={object}
-        
-      />
-    ))}
-    
   </div>
   );
 };
