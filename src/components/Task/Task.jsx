@@ -71,6 +71,15 @@ export default function Task ( { title, date, description, projectObject, projec
         }, 1000); // Simulated delay of 1 second
       };
 
+      const [logan, setLogan] = useState('logan cant code')
+      const [click, setCLick] = useState(true)
+
+
+      useEffect(() => {
+        // setLogan('not logan')
+        console.log("this is being changed")
+     }, [click]);
+
 
     return (
 
@@ -117,6 +126,11 @@ export default function Task ( { title, date, description, projectObject, projec
                 <input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4 w-3/4" type="text" value={taskInput} onChange={handleChange}></input>
                 <button className="hover:text-gray-400 pr-20 font" onClick={addTask} disabled={disable}>Add Task</button>
             </div>
+
+            <h1>{logan}</h1>
+
+            <button onClick={() => setCLick(false)}>very cool button</button>
+
 
             
             {isActive ? (
