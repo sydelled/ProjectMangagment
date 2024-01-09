@@ -8,49 +8,67 @@ import React from 'react';
 
 
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
 
 function App() {
    
+  const navigate = useNavigate();
   //initial empty array
   const [updatedObject, setUpdatedObject] = useState([]);
 
-  // Callback function to receive the updated object from Project component
-  const handleObjectUpdate = (updatedObj) => {
-    //creating an array of objects over multiple updates
-    //updates previous empty array with new updated array by spread operator
-    setUpdatedObject(prevState => [...prevState, updatedObj]); 
-   
+  const handleProjectUpdate = (updatedObjData) => {
+    const newProject = {
+      ...updatedObjData,
+      id: Math.random()
+    };
+  
+    setUpdatedObject((prevState) => [...prevState, newProject]);
   };
 
+  
+  const handleDeleteProject = (projectID) => {
+    setUpdatedObject((prevState) => [
+      ...prevState.filter((project) => project.id !== projectID)
+    ]);
+    navigate('/')
+  };
+  
+
+  console.log('app', updatedObject)
  
   return (
 
 
     <div className="grid grid-cols-5 gap-8">
-    <SideBar newProject={updatedObject} />
+    <SideBar 
+    updatedProject={updatedObject}
+     />
   
     <Routes>
       {/* main page */}
       <Route path="/" element={<Header />} />
-      <Route path="/project" element={<Project objectUpdate={handleObjectUpdate} />} />
+      
+      <Route 
+      path="/project" 
+      element={
+      <Project 
+      handleProjectUpdate={handleProjectUpdate} />} />
   
-      {updatedObject.map((object, index) => (
+      
+       {updatedObject.map((project) => (
         <Route
-          key={`route_${index}`} // Ensure a unique key for each Route
-          path={`/task/${object.Title}`} // title is unique and used in the URL
+          key={project.id} // Ensure a unique key for each Route
+          path={`/task/${project.Title}`} // title is unique and used in the URL
           element={
             <Task
-              title={object.Title}
-              date={object.Date}
-              description={object.Description}
-              projectObject={object}
-              projectArray={updatedObject}
-  
+              project={project}
+              onDelete = {handleDeleteProject}
             />
           }
         />
-      ))}
+      ))} 
+      
   
       {/* Fallback route */}
       <Route path="*" element={<NoPage />} />
@@ -59,5 +77,6 @@ function App() {
   </div>
   );
 };
+
 
 export default App;

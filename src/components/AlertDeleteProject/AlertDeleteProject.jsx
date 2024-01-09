@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import Button from "../Button/Button";
 
 export default function AlertDeleteProject( { deleteProject, projectObject} ) {
 
@@ -23,8 +24,8 @@ export default function AlertDeleteProject( { deleteProject, projectObject} ) {
         <dialog open={openModals}>
         <p>Are you sure you want to delete this project?</p>
         
-        <button onClick={confirmDelete}>Yes</button>
-        <button onClick={handleCloseModal}>No</button>
+        <Button onClick={confirmDelete}>Yes</Button>
+        <Button onClick={handleCloseModal}>No</Button>
         </dialog>
         </>
         )
