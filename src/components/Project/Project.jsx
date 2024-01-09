@@ -1,86 +1,105 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import Button from "../Button/Button";
+import Modal from '../Modal/Modal';
+import Input from '../Input/Input';
 
-export default function Project ({ objectUpdate }){
+export default function Project ({ handleProjectUpdate }){
 
     const navigate = useNavigate();
+    const modal = useRef();
 
-   
+    const title = useRef();
+    const description = useRef();
+    const dueDate = useRef();
 
-    const [ updateProject, setUpdateProject ] = useState({
-        Title: '',
-        Description: '', 
-        Date: ''
-    });
-    
-    const [ disable, setDisable ] = useState(true);
+    const [ disable, setDisable ] = useState(false);
 
-
-    const handleChange = (event) => {
-        let value = event.target.value;
-        let name = event.target.name; 
-        
-            setUpdateProject((preValue) => {
-                return {
-                    ...preValue,
-                    [name] : value,
-                };
-            });
-
-            
-    };
     
     const handleSave = () => {
+     
+     //recieving the new value
+     const enteredTitle = title.current.value;
+     const enteredDescription = description.current.value;
+     const enteredDueDate = dueDate.current.value;
 
-        // Call the onObjectUpdate callback with the updated object - from app component
-        objectUpdate(updateProject);
+     //saving new value in a new object
+     const savingProject = {
+      Title: enteredTitle,
+      Description: enteredDescription,
+      DueDate: enteredDueDate
+     };
 
-        setUpdateProject({
-            Title: '',
-            Description: '', 
-            Date: ''
-        });
+      //check if all fields are not empty
+      const allFieldsFilled =
+        savingProject.Title.trim() !== '' &&
+        savingProject.Description.trim() !== '' &&
+        savingProject.DueDate.trim() !== '';
+    
+      //if all fields are not empty
+      if (!allFieldsFilled) {
+        modal.current.open(); // Open the modal to indicate missing fields
+        setDisable(true); // Disable the fields
+      } else {
+        setDisable(false); // Enable the fields if all fields are filled
+        modal.current.open(); //show modal when project is saved
+        handleProjectUpdate(savingProject); //save new object to handProjectUpdate in app component
+
+        //clearing input fields after saving
+        title.current.value = '';
+        description.current.value = '';
+        dueDate.current.value = '';
+
+        //navigate back to index
+        navigate('/')
+
+       
+      }
     };
-
-    useEffect(() => {
-        // Check if all fields have values
-        const allFieldsFilled = Object.values(updateProject).every((val) => val !== '');
-        setDisable(!allFieldsFilled);
-      }, [updateProject]);
-
-  
-   console.log('project', updateProject);
+        
    
     return(
-             <div className='col-span-4'>
+      <>
+      <Modal ref={modal} buttonCaption="Close" disable={disable}>
+      {disable ? (
+          <>
+            <h2>Invalid Input</h2>
+            <p>Please provide a valid value for the input field.</p>
+          </>
+        ) : (
+          <>
+            <h2>Project Saved</h2>
+            <p>Your project has been saved.</p>
+          </>
+        )}
+
+      </Modal>
+
+        <div className='col-span-4'>
         <div className="grid grid-rows-4 gap-10 p-10">
-   
-           
            
            <div className='flex float-right justify-end items-center pt-10 space-x-4 pr-10'> 
            
-               <button className='bg-gray-500/75 hover:bg-gray-700/75 text-white font-bold p-5 py-3 px-6 rounded-lg' onClick={() => navigate('/')}>Cancel</button>
+               <Button onClick={() => navigate('/')}>Cancel</Button>
            
-               <button className='bg-gray-500/75 hover:bg-gray-700/75 text-white font-bold py-3 px-6 rounded-lg' onClick={handleSave} disabled={disable}>Save</button>
+               <Button onClick={handleSave} disabled={disable}>Save</Button>
                
            </div>
-       
         
          <div>
-           <label className='uppercase text-brown-600 font-bold'>Title:<p><input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4  w-3/4" type="text" name="Title" value={updateProject.Title} onChange={handleChange}></input></p></label>
+           <Input ref={title} label="Title" type="text" name="Title"></Input>
            
          </div>
          <div>
-           <label className='uppercase text-brown-600 font-bold'>Description: <p><input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4 w-3/4 min-h-4/5" type="text" name="Description" value={updateProject.Description} onChange={handleChange}></input></p></label>
-           
+           <Input ref={description} label="Description" type="text" name="Description" textarea></Input>
          </div>
          <div>
-           <label className='uppercase text-brown-600 font-bold'>Due Date: <p><input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4 w-3/4" type="date" name="Date" value={updateProject.Date} onChange={handleChange}></input></p></label>
-           
+           <Input ref={dueDate} label="Due Date" type="date" name="Date"></Input>
          </div>
      
        </div>
      </div>
+     </>
    
     );
 };

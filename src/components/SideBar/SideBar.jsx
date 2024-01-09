@@ -1,31 +1,36 @@
 import { useNavigate, Link } from 'react-router-dom';
+import Button from '../Button/Button';
+import { useState, useEffect } from 'react';
 
 
 
-export default function SideBar( { newProject }){
+export default function SideBar( { updatedProject }){
 
     const navigate = useNavigate();
+
+   console.log('sidebar', updatedProject)
     
     return(
         
         <aside className="bg-black min-h-screen">
         
-           <div className="flex flex-col justify-center space-y-5 pt-10 ">
-            <h3 className="text-white text-center font-bold uppercase">Your Projects</h3>
-            <p className='pb-10'>
-            <button className='bg-gray-500/75 hover:bg-gray-700/75 text-white font-bold py-2 px-4 rounded mx-auto block' onClick={() => navigate('/project')}>+ Add Project</button>
-            </p>
-            
-                {newProject.map((obj, index) => (
-                    <div className='pt-3' key={index}>
-                    <Link to={`/task/${obj.Title}`}>
-                        <p className="text-white text-center font-bold uppercase hover:bg-gray-700/75 ">{obj.Title}</p>
+           <div className="flex flex-col justify-center space-y-5 p-10 ">
+                <h3 className="text-white text-center font-bold uppercase">Your Projects</h3>
+                
+            <Button onClick={() => navigate('/project')}>+ Add Project</Button>
+               
+                <ul>
+                {updatedProject.map((project) => (
+                <li className='text-white text-center font-bold uppercase hover:bg-gray-700/75 p-3' key={project.id}>
+                    <Link to={`/task/${project.Title}`}>
+                        {project.Title}
                     </Link>
-                    </div>
+                </li>
 
                 ))}
                 
-            </div>
+                </ul>
+                </div>
             
         </aside>
        

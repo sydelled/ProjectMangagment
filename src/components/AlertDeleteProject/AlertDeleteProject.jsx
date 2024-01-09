@@ -1,38 +1,33 @@
-import { useNavigate } from 'react-router-dom';
 
-export function AlertDeleteProject( {  open, onClose, deleteProject, projectObject} ) {
+import { useState } from 'react';
+import Button from "../Button/Button";
 
+export default function AlertDeleteProject( { deleteProject, projectObject} ) {
 
-    const navigate = useNavigate();
-    
-    const handleDeleteProject = async () => {
-        
-        try {
-            const deletionResult = await deleteProject(projectObject.Title);
-            console.log('result', typeof(projectObject))
+ const [openModals, setOpenModals] = useState(true);
 
-            console.log(deletionResult);
-            onClose();
-            // Navigate after successful deletion
-            navigate('/');
-          } catch (error) {
-            //if the deletion fails
-            console.error('Deletion failed:', error);
-          }
-        };
+  // const handleOpenModal = () => {
+  //   setOpenModals(true);
+  // };
 
-        console.log('open', open)
+  const handleCloseModal = () => {
+    setOpenModals(false);
+  };
+  
+    const confirmDelete = () => {
+      deleteProject(projectObject.Title)
+      console.log('projectTitle', projectObject.Title)
+    }
     return(
         <>
-        {open && (
-        <dialog open={open}>
+       
+        <dialog open={openModals}>
         <p>Are you sure you want to delete this project?</p>
         
-        <button onClick={handleDeleteProject}>Yes</button>
-        <button onClick={onClose}>No</button>
+        <Button onClick={confirmDelete}>Yes</Button>
+        <Button onClick={handleCloseModal}>No</Button>
         </dialog>
-        )}
         </>
-
-    );
+        )
+        
 };

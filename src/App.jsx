@@ -3,98 +3,80 @@ import SideBar from "./components/SideBar/SideBar";
 import Project from "./components/Project/Project";
 import NoPage from "./components/NoPage/NoPage";
 import Task from "./components/Task/Task";
-import { AlertDeleteProject } from "./components/AlertDeleteProject/AlertDeleteProject";
 import React from 'react';
 
 
 
 import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
 
 function App() {
    
+  const navigate = useNavigate();
   //initial empty array
   const [updatedObject, setUpdatedObject] = useState([]);
-  // const [openModal, setOpenModal] = useState(false);
 
-  // const handleOpenModal = () => setOpenModal(true);
-  // const handleCloseModal = () => setOpenModal(false);
-
-  const [openModals, setOpenModals] = useState({});
-
-  const handleOpenModal = () => {
-    setOpenModals(true);
+  const handleProjectUpdate = (updatedObjData) => {
+    const newProject = {
+      ...updatedObjData,
+      id: Math.random()
+    };
+  
+    setUpdatedObject((prevState) => [...prevState, newProject]);
   };
 
-  const handleCloseModal = () => {
-    setOpenModals(false);
-  };
-
-  // Callback function to receive the updated object from Project component
-  const handleObjectUpdate = (updatedObj) => {
-    //creating an array of objects over multiple updates
-    //updates previous empty array with new updated array by spread operator
-    setUpdatedObject(prevState => [...prevState, updatedObj]); 
-   
-  };
-
-  const deleteProject = (project) => {
-    return new Promise((resolve) => {
-      console.log('app_project', project)
-      console.log('update_obj', updatedObject)
-      const updateProjectObj = updatedObject.filter(obj => obj.Title !== project);
-      setUpdatedObject(updateProjectObj);
-      setTimeout(() => {
-        // Assuming the deletion was successful
-        resolve(`Project with Title ${project} deleted`);
-      }, 1000); // Simulated delay of 1 second
-    });
+  
+  const handleDeleteProject = (projectID) => {
+    setUpdatedObject((prevState) => [
+      ...prevState.filter((project) => project.id !== projectID)
+    ]);
+    navigate('/')
   };
   
-  
+
+  console.log('app', updatedObject)
+ 
   return (
 
 
     <div className="grid grid-cols-5 gap-8">
-    <SideBar newProject={updatedObject} />
+    <SideBar 
+    updatedProject={updatedObject}
+     />
   
     <Routes>
       {/* main page */}
       <Route path="/" element={<Header />} />
-      <Route path="/project" element={<Project objectUpdate={handleObjectUpdate} />} />
+      
+      <Route 
+      path="/project" 
+      element={
+      <Project 
+      handleProjectUpdate={handleProjectUpdate} />} />
   
-      {updatedObject.map((object, index) => (
+      
+       {updatedObject.map((project) => (
         <Route
-          key={`route_${index}`} // Ensure a unique key for each Route
-          path={`/task/${object.Title}`} // title is unique and used in the URL
+          key={project.id} // Ensure a unique key for each Route
+          path={`/task/${project.Title}`} // title is unique and used in the URL
           element={
             <Task
-              title={object.Title}
-              date={object.Date}
-              description={object.Description}
-              projectObject={object}
-              handleOpenModal={handleOpenModal}
+              project={project}
+              onDelete = {handleDeleteProject}
             />
           }
         />
-      ))}
+      ))} 
+      
   
       {/* Fallback route */}
       <Route path="*" element={<NoPage />} />
     </Routes>
   
-    {/* Render AlertDeleteProject */}
-    {updatedObject.map((object, index) => (
-      <AlertDeleteProject
-        key={index}
-        open={openModals}
-        onClose={handleCloseModal}
-        deleteProject={deleteProject}
-        projectObject={object}
-      />
-    ))}
   </div>
   );
 };
+
 
 export default App;

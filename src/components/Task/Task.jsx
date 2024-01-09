@@ -1,19 +1,20 @@
 
+import { useState, useEffect, useRef } from 'react';
 
-import { useState, useEffect } from 'react';
+import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
 
+export default function Task ( { project, onDelete }){
 
-
-
-export default function Task ( { title, date, description, projectObject, handleOpenModal }){
-
+    const modal = useRef();
+    
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('');
 
     const [ disable, setDisable ] = useState(false);
-    const [ active, setActive ] = useState({ [projectObject.Title] : false} );
+    const [ active, setActive ] = useState({ [project.Title] : false} );
    
-    const formattedDate = new Date(date).toLocaleDateString('en-US', {
+    const formattedDate = new Date(project.DueDate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -24,10 +25,10 @@ export default function Task ( { title, date, description, projectObject, handle
     };
 
     const addTask = () => {
-        const newTask = { task: taskInput, projectTitle: projectObject.Title }; // Associate task with projectId
+        const newTask = { task: taskInput, projectTitle: project.Title }; // Associate task with projectTitle
         setTasks((prevTasks) => [...prevTasks, newTask]);
         setTaskInput(''); // Reset input field after adding task
-        setActive({...active, [projectObject.Title] : true} );
+        setActive({...active, [project.Title] : true} );
     };
 
     const handleClear = (index) => {
@@ -47,12 +48,17 @@ export default function Task ( { title, date, description, projectObject, handle
     }, [taskInput]);
         
     // Filter tasks for the current projectObject
-    const projectTasks = tasks.filter((task) => task.projectTitle === projectObject.Title);
+    const projectTasks = tasks.filter((task) => task.projectTitle === project.Title);
 
-    const isActive = active[projectObject.Title] || false;
+    const isActive = active[project.Title] || false;
 
     return (
-
+        <>
+        <Modal ref={modal} buttonCaption="Close">
+            <h2>Delete Project?</h2>
+            <p>Would you like to delete this project?</p>
+          </Modal>
+        
 
         <div className='col-span-4'>
         <div className="grid grid-flow-row auto-rows-max p-10">
@@ -60,17 +66,16 @@ export default function Task ( { title, date, description, projectObject, handle
        
         <div className='flex flex-col pt-10 pb-20'>
         
+        
+        
         <div className='flex flex-row justify-between pb-10'>
-            <h1 className='text-brown-600 text-3xl uppercase font-serif font-bold'>{title}</h1>
-            
-            <button className="hover:text-gray-400 pr-20 font" 
-            onClick={handleOpenModal}>Delete</button>
-            
-            
+            <h1 className='text-brown-600 text-3xl uppercase font-serif font-bold'>{project.Title}</h1>
+            <button className="hover:text-gray-400 pr-20 font" onClick={() => onDelete(project.id)}>Delete</button>
+        </div>
+       
 
-            </div>
-            <h2 className='pt-2 text-gray-500 font-mono text-lg'>{formattedDate}</h2>
-            <p className='pt-10 font-mono text-lg'>{description}</p> 
+        <h2 className='pt-2 text-gray-500 font-mono text-lg'>{formattedDate}</h2>
+        <p className='pt-10 font-mono text-lg'>{project.Description}</p> 
                      
         </div>
 
@@ -80,14 +85,15 @@ export default function Task ( { title, date, description, projectObject, handle
         <div className='flex flex-col pt-10 p-5 pb-20'>
         
             <h3 className='text-brown-600 text-2xl uppercase font-serif font-bold pb-10'>Tasks</h3>
-       
+
             
             <div className='flex flex-row justify-between pb-10'>
             
                 <input className="bg-tan-100/40 px-4 py-2 rounded-md focus:outline-none focus:border-brown-700 focus:border-b-4 w-3/4" type="text" value={taskInput} onChange={handleChange}></input>
-                <button className="hover:text-gray-400 pr-20 font" onClick={addTask} disabled={disable}>Add Task</button>
+                <Button onClick={addTask} disabled={disable}>Add Task</Button>
             </div>
 
+            
             
             {isActive ? (
             
@@ -97,7 +103,7 @@ export default function Task ( { title, date, description, projectObject, handle
                     <div className="flex flex-row justify-between p-5" key={index}>
                     
                         {taskValue.task}
-                        <button className='hover:text-gray-400' onClick={() => handleClear(index)}>Clear</button>
+                        <Button onClick={() => handleClear(index)}>Clear</Button>
                     
                     
                     </div>))}
@@ -110,6 +116,6 @@ export default function Task ( { title, date, description, projectObject, handle
 
         </div>
         </div>
-        
+        </>
     );
 };
